@@ -277,13 +277,13 @@ def create_tree_data():
     Create a tree
     :return: sensor_tree
     """
-    tree = TreeGraph()
-    tree.logger.info("Making Tree Data")
-    tree.make_tree()
-    tree.logger.info("Validating Tree Data")
-    tree.validate_all_trees()
-    tree.logger.info("Tree Validated")
-    return tree.sensor_tree
+    Tree = TreeGraph()
+    Tree.logger.info("Making Tree Data")
+    Tree.make_tree()
+    Tree.logger.info("Validating Tree Data")
+    Tree.validate_all_trees()
+    Tree.logger.info("Tree Validated")
+    return Tree
 
 
 if __name__ == '__main__':
