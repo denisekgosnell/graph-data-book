@@ -2,7 +2,7 @@ import external_data
 
 import numpy as np
 import random
-
+import logging
 
 class TreeGraph(object):
     """
@@ -30,6 +30,14 @@ class TreeGraph(object):
         # create dictionaries of the nearest towers
         self.sensor_tower_neighbors = {}
         self.make_sensor_tower_neighbors()
+        # logging information
+        self.logfile = "tree_data.log"
+        logging.basicConfig(filename=self.logfile,
+                            filemode='w',
+                            level=logging.DEBUG,
+                            format='%(name)s - %(levelname)s - %(message)s')
+        self.logger = logging.getLogger("TreeClassLogger")
+
         
     def haversine_np(self, lon1, lat1, lon2, lat2):
         """
@@ -87,7 +95,7 @@ class TreeGraph(object):
         # current_sensor --- time ---> to_edge
         if current_sensor in self.edge_list.keys():
             if time in self.edge_list[current_sensor].keys():
-                print("CONSTRUCTION ERROR: {} already has an edge at time {}".format(current_sensor, time))
+                logging.error("CONSTRUCTION ERROR: {} already has an edge at time {}".format(current_sensor, time))
                 raise ValueError
             else:
                 self.edge_list[current_sensor][time] = to_edge
@@ -102,12 +110,12 @@ class TreeGraph(object):
         # current_sensor --- t ---> to_edge
         if starting_sensor in self.sensor_tree.keys():
             if time in self.sensor_tree[starting_sensor].keys():
-                print("CONSTRUCTION ERROR: {} already has an edge at time {} in sensor_tree".format(starting_sensor, time))
+                logging.error("CONSTRUCTION ERROR: {} already has an edge at time {} in sensor_tree".format(starting_sensor, time))
                 raise ValueError
             else:
                 self.sensor_tree[starting_sensor][time] = to_edge
         else:
-            print("CONSTRUCTION ERROR: sensor_path was not initialized for {}".format(starting_sensor))
+            logging.error("CONSTRUCTION ERROR: sensor_path was not initialized for {}".format(starting_sensor))
             raise ValueError
 
     def edge_already_exists(self, current_sensor, time):
@@ -236,10 +244,7 @@ class TreeGraph(object):
             # Start with checking Rule 4A
             if time == self.time_bound:
                 # did we already add a tower at this time?
-                if self.edge_already_exists(current_sensor, time):
-                    # assert an adjacent tower
-                    assert self.is_tower(self.get_adjacent_vertex(current_sensor, time))
-                else:
+                if not self.edge_already_exists(current_sensor, time):
                     ## add an edge from the current sensor to a tower
                     random.shuffle(self.sensor_tower_neighbors[current_sensor])
                     to_tower = self.sensor_tower_neighbors[current_sensor][0][0]
@@ -263,7 +268,7 @@ class TreeGraph(object):
             try:
                 self.validate_sensor_tree(starting_sensor)
             except AssertionError as e:
-                print(e.args)
+                self.logger.error(e.args)
                 raise
 
 
@@ -272,10 +277,12 @@ def create_tree_data():
     Create a tree
     :return: sensor_tree
     """
-
     tree = TreeGraph()
+    tree.logger.info("Making Tree Data")
     tree.make_tree()
+    tree.logger.info("Validating Tree Data")
     tree.validate_all_trees()
+    tree.logger.info("Tree Validated")
     return tree.sensor_tree
 
 
