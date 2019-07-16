@@ -25,9 +25,8 @@ setup(
     include_package_data=True,
     platforms="any",
     install_requires=[
-        "requests>=2.21.0",
-        "oauthlib==2.1.0",
-        "requests-oauthlib==1.0.0",
+        "dse-driver==2.9.0",
+        "dse-graph==1.7.0"
     ],
     test_suite='nose.collector',
     tests_require=["nose==1.3.7"],

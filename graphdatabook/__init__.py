@@ -6,3 +6,9 @@
 
 from __future__ import absolute_import
 
+__title__ = 'graphdatabook'
+__version__ = '0.0.1'
+__author__ = '@denisekgosnell'
+__license__ = 'MIT'
+
+import graphdatabook.ch6_trees
