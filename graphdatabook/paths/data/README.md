@@ -32,10 +32,10 @@ out_publicKey,in_publicKey,trust,datetime
 #### Data Source
 https://snap.stanford.edu/data/soc-sign-bitcoin-alpha.html
 
-#### Raw Data Structure 
-```soc-sign-bitcoinotc.csv:
-SOURCE, TARGET, RATING, TIME```
-
+#### Raw Data Structure of soc-sign-bitcoinotc.csv
+```
+SOURCE, TARGET, RATING, TIME
+```
 
 ## Optional: Data ETL
 ### Run ETL to generate the vertices and edges files:
